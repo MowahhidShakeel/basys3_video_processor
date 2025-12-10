@@ -9,7 +9,7 @@ def main():
     parser = argparse.ArgumentParser(description="Process and stream video over UART")
     parser.add_argument("--video_path", type=str, help="Path to the input .mp4 video file")
     parser.add_argument("--port", type=str, default="COM3", help="UART port")
-    parser.add_argument("--baudrate", type=int, default=12000000, help="UART baud rate")
+    parser.add_argument("--baudrate", type=int, default=115200, help="UART baud rate")
     parser.add_argument("--output_video", type=str, default="modified_video.mp4", help="Path to save the modified video")
     args = parser.parse_args()
 
@@ -35,14 +35,14 @@ def main():
         return
 
     # Set up UART serial connection
-    # try:
-    #     ser = serial.Serial(args.port, args.baudrate, timeout=1)
-    #     print(f"Connected to UART on {args.port} at {args.baudrate} baud.")
-    # except serial.SerialException as e:
-    #     print(f"Error: Could not open serial port: {e}")
-    #     cap.release()
-    #     out.release()
-    #     return
+    try:
+        ser = serial.Serial(args.port, args.baudrate, timeout=1)
+        print(f"Connected to UART on {args.port} at {args.baudrate} baud.")
+    except serial.SerialException as e:
+        print(f"Error: Could not open serial port: {e}")
+        cap.release()
+        out.release()
+        return
 
     frame_count = 0
     start_time = time.time()
@@ -65,7 +65,7 @@ def main():
         raw_bytes = gray.tobytes()
 
         # Transmit over UART
-        # ser.write(raw_bytes)
+        ser.write(raw_bytes)
         print(f"Sent frame {frame_count} ({len(raw_bytes)} bytes)")
 
         # Control frame rate
@@ -76,7 +76,7 @@ def main():
     # Cleanup
     cap.release()
     out.release()
-    # ser.close()
+    ser.close()
 
     end_time = time.time()
     actual_fps = frame_count / (end_time - start_time) if (end_time - start_time) > 0 else 0
