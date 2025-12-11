@@ -65,6 +65,7 @@ def main():
         raw_bytes = gray.tobytes()
 
         # Transmit over UART
+        ser.write(b'\xAA\x55\xDE\xAD')  # Magic start sequence
         ser.write(raw_bytes)
         print(f"Sent frame {frame_count} ({len(raw_bytes)} bytes)")
 
