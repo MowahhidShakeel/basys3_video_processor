@@ -9,7 +9,7 @@ def main():
     parser = argparse.ArgumentParser(description="Process and stream video over UART")
     parser.add_argument("--video_path", type=str, help="Path to the input .mp4 video file")
     parser.add_argument("--port", type=str, default="COM3", help="UART port")
-    parser.add_argument("--baudrate", type=int, default=115200, help="UART baud rate")
+    parser.add_argument("--baudrate", type=int, default=1200000, help="UART baud rate")
     parser.add_argument("--output_video", type=str, default="modified_video.mp4", help="Path to save the modified video")
     args = parser.parse_args()
 
